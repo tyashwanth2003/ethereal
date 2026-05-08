@@ -419,7 +419,6 @@ Only include PREVIEW when the user is genuinely asking about a specific design o
 function generatePreviewSVG(data) {
   const { type, palette } = data;
   const bg = palette?.[0] || "#0a0a14";
-  const accent = palette?.[1] || "#e8a020";
 
   const designs = {
     landing_page: `<rect width="340" height="220" fill="${bg}"/>`,
