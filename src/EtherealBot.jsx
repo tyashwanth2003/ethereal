@@ -9,8 +9,8 @@ const BOT_CSS = `
     bottom: 2rem;
     right: 2rem;
     z-index: 9000;
-    width: 58px;
-    height: 58px;
+    width: clamp(52px, 5vw, 58px);
+    height: clamp(52px, 5vw, 58px);
     border-radius: 50%;
     background: var(--amber, #e8a020);
     border: none;
@@ -22,6 +22,7 @@ const BOT_CSS = `
     animation: ebPulse 2.5s ease-in-out infinite;
     transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
     overflow: hidden;
+    touch-action: manipulation;
   }
   .eb-launcher::before {
     content: '';
@@ -62,11 +63,15 @@ const BOT_CSS = `
   /* ── Chat Window ── */
   .eb-window {
     position: fixed;
-    bottom: 6.5rem;
     right: 2rem;
+    bottom: 6.5rem;
     z-index: 8999;
-    width: 420px;
-    height: 620px;
+
+    width: min(420px, calc(100vw - 1.5rem));
+    max-width: 420px;
+    height: min(620px, calc(100vh - 8.5rem));
+    max-height: calc(100vh - 8.5rem);
+
     background: #07070e;
     border: 1px solid rgba(232,160,32,.18);
     display: flex;
@@ -75,6 +80,7 @@ const BOT_CSS = `
     transform-origin: bottom right;
     animation: ebOpen .4s cubic-bezier(.34,1.56,.64,1) forwards;
     overflow: hidden;
+    touch-action: pan-y;
   }
   .eb-window::before {
     content: '';
@@ -208,6 +214,8 @@ const BOT_CSS = `
     flex-direction: column;
     gap: 1rem;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
   }
   .eb-msgs::-webkit-scrollbar { width: 3px; }
   .eb-msgs::-webkit-scrollbar-track { background: transparent; }
@@ -226,12 +234,13 @@ const BOT_CSS = `
   .eb-msg.user { align-items: flex-end; }
   .eb-msg.bot  { align-items: flex-start; }
   .eb-bubble {
-    max-width: 85%;
+    max-width: min(85%, 100%);
     padding: .75rem 1rem;
     font-size: .75rem;
     line-height: 1.85;
     letter-spacing: .01em;
     position: relative;
+    word-break: break-word;
   }
   .eb-msg.user .eb-bubble {
     background: rgba(232,160,32,.12);
@@ -267,7 +276,8 @@ const BOT_CSS = `
     border: 1px solid rgba(232,160,32,.15);
     background: #0a0a14;
     overflow: hidden;
-    max-width: 85%;
+    max-width: 100%;
+    width: 100%;
     animation: previewIn .5s .1s cubic-bezier(.34,1.2,.64,1) both;
   }
   @keyframes previewIn {
@@ -286,7 +296,7 @@ const BOT_CSS = `
     gap: .5rem;
   }
   .eb-preview-label::before { content: '◈'; font-size: .65rem; }
-  .eb-preview svg { display: block; width: 100%; }
+  .eb-preview svg { display: block; width: 100%; height: auto; }
 
   /* ── Typing Indicator ── */
   .eb-typing {
@@ -385,6 +395,157 @@ const BOT_CSS = `
     animation: shimmer 1.5s ease-in-out infinite;
   }
   @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+  /* ── TABLET ── */
+  @media (max-width: 768px) {
+    .eb-launcher {
+      bottom: 1rem;
+      right: 1rem;
+    }
+
+    .eb-window {
+      right: .5rem;
+      bottom: .5rem;
+      width: calc(100vw - 1rem);
+      max-width: none;
+      height: calc(100vh - 5.5rem);
+      max-height: calc(100vh - 5.5rem);
+      border-radius: 18px;
+    }
+
+    .eb-head {
+      padding: .95rem 1rem;
+      gap: .6rem;
+    }
+
+    .eb-avatar {
+      width: 32px;
+      height: 32px;
+    }
+
+    .eb-name {
+      font-size: .95rem;
+    }
+
+    .eb-status {
+      font-size: .52rem;
+      letter-spacing: .14em;
+    }
+
+    .eb-suggestions {
+      padding: .65rem 1rem;
+    }
+
+    .eb-chip {
+      font-size: .55rem;
+      padding: .28rem .6rem;
+    }
+
+    .eb-msgs {
+      padding: 1rem;
+    }
+
+    .eb-bubble {
+      max-width: 100%;
+      font-size: .72rem;
+    }
+
+    .eb-preview {
+      max-width: 100%;
+    }
+
+    .eb-input-area {
+      padding: .75rem 1rem;
+    }
+
+    .eb-input {
+      font-size: .7rem;
+      min-height: 36px;
+    }
+
+    .eb-send {
+      width: 36px;
+      height: 36px;
+    }
+
+    .eb-footer {
+      padding: .4rem 1rem;
+    }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 480px) {
+    .eb-window {
+      right: .5rem;
+      left: .5rem;
+      bottom: .5rem;
+      width: calc(100vw - 1rem);
+      height: calc(100vh - 4.75rem);
+      max-height: calc(100vh - 4.75rem);
+      border-radius: 16px;
+    }
+
+    .eb-head {
+      padding: .85rem .9rem;
+    }
+
+    .eb-name {
+      font-size: .9rem;
+    }
+
+    .eb-status {
+      font-size: .5rem;
+      letter-spacing: .12em;
+      margin-top: .12rem;
+    }
+
+    .eb-msg-time {
+      font-size: .5rem;
+    }
+
+    .eb-preview-label {
+      font-size: .5rem;
+    }
+
+    .eb-input-area {
+      padding: .7rem .9rem;
+      gap: .5rem;
+    }
+
+    .eb-input {
+      font-size: .68rem;
+      padding: .6rem .8rem;
+    }
+
+    .eb-send {
+      width: 34px;
+      height: 34px;
+    }
+
+    .eb-launcher {
+      width: 52px;
+      height: 52px;
+      bottom: .9rem;
+      right: .9rem;
+    }
+  }
+
+  /* ── VERY SMALL SCREENS ── */
+  @media (max-width: 360px) {
+    .eb-window {
+      height: calc(100vh - 4rem);
+      max-height: calc(100vh - 4rem);
+    }
+
+    .eb-bubble {
+      font-size: .68rem;
+      line-height: 1.75;
+    }
+
+    .eb-chip {
+      font-size: .5rem;
+    }
+  }
 `;
 
 const API_KEY = process.env.REACT_APP_DEEPSEEK_API_KEY;
@@ -499,8 +660,10 @@ export default function EtherealBot({ forceOpen = false, onClose }) {
 
   useEffect(() => {
     if (open && inputRef.current) {
-      setTimeout(() => inputRef.current?.focus(), 350);
+      const t = setTimeout(() => inputRef.current?.focus(), 250);
+      return () => clearTimeout(t);
     }
+    return undefined;
   }, [open]);
 
   const handleClose = useCallback(() => {
