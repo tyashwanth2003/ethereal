@@ -420,14 +420,6 @@ function generatePreviewSVG(data) {
   const { type, palette } = data;
   const bg = palette?.[0] || "#0a0a14";
   const accent = palette?.[1] || "#e8a020";
-  const text = palette?.[2] || "#f0ebe0";
-
-  const accentAlpha = (a) => {
-    const r = parseInt(accent.slice(1,3),16);
-    const g = parseInt(accent.slice(3,5),16);
-    const b = parseInt(accent.slice(5,7),16);
-    return `rgba(${r},${g},${b},${a})`;
-  };
 
   const designs = {
     landing_page: `<rect width="340" height="220" fill="${bg}"/>`,
@@ -581,7 +573,8 @@ export default function EtherealBot({ forceOpen = false, onClose }) {
         ...prev,
         { role: "bot", text: parsedText, time: now(), preview: previewData },
       ]);
-    } catch {
+    } catch (err) {
+      console.error("EtherealBot error:", err);
       setMessages((prev) => [
         ...prev,
         {
